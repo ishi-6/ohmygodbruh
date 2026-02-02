@@ -23,50 +23,69 @@ function filterBlipsByType(type) {
   const blipSelector = '.quadrant-group-second .blip-link'
   const blips = document.querySelectorAll(blipSelector)
   const listItems = document.querySelectorAll('.quadrant-table.second .blip-list__item-container')
+  const ringHeaders = document.querySelectorAll('.quadrant-table.second h3')
+  const ringLists = document.querySelectorAll('.quadrant-table.second ul')
 
   if (type === 'all types') {
-    // Batch show all blips
+    // Show everything - blips, list items, descriptions, rings
     blips.forEach((blip) => {
-      const blipGroup = blip.parentElement
-      if (blipGroup) {
-        blipGroup.style.opacity = '1'
-        blipGroup.style.visibility = 'visible'
-        blipGroup.style.pointerEvents = 'auto'
-      }
+      blip.style.opacity = '1'
+      blip.style.visibility = 'visible'
+      blip.style.pointerEvents = 'auto'
     })
     listItems.forEach((item) => {
       item.style.opacity = '1'
+      item.style.visibility = 'visible'
       item.style.display = ''
     })
+    ringHeaders.forEach((header) => {
+      header.style.display = ''
+    })
+    ringLists.forEach((list) => {
+      list.style.display = ''
+    })
   } else {
-    // Hide all first
+    // First hide everything
     blips.forEach((blip) => {
-      const blipGroup = blip.parentElement
-      if (blipGroup) {
-        blipGroup.style.opacity = '0'
-        blipGroup.style.pointerEvents = 'none'
-      }
+      blip.style.opacity = '0'
+      blip.style.visibility = 'hidden'
+      blip.style.pointerEvents = 'none'
     })
     listItems.forEach((item) => {
       item.style.opacity = '0'
+      item.style.visibility = 'hidden'
       item.style.display = 'none'
     })
+    ringHeaders.forEach((header) => {
+      header.style.display = 'none'
+    })
+    ringLists.forEach((list) => {
+      list.style.display = 'none'
+    })
 
-    // Then selectively show matching type
+    // Then show matching type
     blips.forEach((blip) => {
       if (blip.getAttribute('data-type') === type) {
-        const blipGroup = blip.parentElement
-        if (blipGroup) {
-          blipGroup.style.opacity = '1'
-          blipGroup.style.visibility = 'visible'
-          blipGroup.style.pointerEvents = 'auto'
-        }
+        blip.style.opacity = '1'
+        blip.style.visibility = 'visible'
+        blip.style.pointerEvents = 'auto'
       }
     })
     listItems.forEach((item) => {
       if (item.getAttribute('data-type') === type) {
         item.style.opacity = '1'
+        item.style.visibility = 'visible'
         item.style.display = ''
+
+        // Show the ring header and list for this item
+        const parentList = item.closest('ul')
+        if (parentList) {
+          parentList.style.display = ''
+          const header = parentList.previousElementSibling
+          if (header && header.tagName === 'H3') {
+            header.style.display = ''
+          }
+        }
       }
     })
   }
